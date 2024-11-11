@@ -1,23 +1,30 @@
-# 使用 Node.js 18 作为基础镜像
-FROM node:18-alpine
+# 构建阶段
+FROM node:18-alpine AS builder
 
-# 设置工作目录
 WORKDIR /app
-
-# 复制 package.json 和 package-lock.json
-COPY package*.json ./
-
-# 安装依赖
-RUN npm ci
-
-# 复制所有源代码
 COPY . .
 
-# 构建应用
+# 安装依赖并构建
+RUN npm install
 RUN npm run build
 
-# 暴露端口
-EXPOSE 3000
+# 运行阶段
+FROM node:18-alpine AS runner
 
-# 启动应用
-CMD ["npm", "start"] 
+WORKDIR /app
+
+# 从构建阶段复制必要文件
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# 设置环境变量
+ENV PORT=8080
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+
+EXPOSE 8080
+
+# 启动服务
+CMD ["node", "server.js"] 
