@@ -12,6 +12,8 @@ import { defaultLocale, getDictionary } from '@/lib/i18n';
 
 import Cta from '@/components/home/cta';
 
+export const runtime = 'edge';
+
 export default function Page({ params }) {
 	const [dict, setDict] = useState({ About: {}, Testimonial: {}, CTA: {}, CTAButton: {} });
 

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { IoMdHome } from 'react-icons/io';
 import { defaultLocale, getDictionary } from '@/lib/i18n';
 import pubfn from '@/lib/function';

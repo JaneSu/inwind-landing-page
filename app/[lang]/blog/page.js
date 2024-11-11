@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { IoMdHome } from 'react-icons/io';
 import BlogCard from '@/components/blog/card';
 import BlogList from '@/locales/blog/list.json';
